@@ -1,17 +1,7 @@
 [
-  {
-    "id": "1",
-    "title": "Buy groceries",
-    "completed": false
-  },
-  {
-    "id": "2",
-    "title": "Do laundry",
-    "completed": false
-  },
-  {
-    "id": "3",
-    "title": "Finish project",
-    "completed": true
-  }
+    {
+        "id": "e99bd8b4-adef-47be-9ef2-52fed86f69df",
+        "title": "learn node.js",
+        "completed": false
+    }
 ]
