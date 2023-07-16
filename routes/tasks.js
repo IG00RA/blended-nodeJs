@@ -6,11 +6,23 @@ const {
   updateTask,
   removeTask,
 } = require("../controllers/tasksControllers");
+const { validateBody } = require("../helpers/validateBody");
+const {
+  createTaskValidationSchema,
+  updateTaskValidationSchema,
+} = require("../helpers/validation/tasksValidationSchemas");
 
 const router = express.Router();
-router.route("/").get(getAllTasks).post(createTask);
+router
+  .route("/")
+  .get(getAllTasks)
+  .post(validateBody(createTaskValidationSchema), createTask);
 
-router.route("/:id").get(getOneTask).patch(updateTask).delete(removeTask);
+router
+  .route("/:id")
+  .get(getOneTask)
+  .patch(validateBody(updateTaskValidationSchema), updateTask)
+  .delete(removeTask);
 
 // router.get("/", getAllTasks);
 

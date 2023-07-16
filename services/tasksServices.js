@@ -1,18 +1,14 @@
-const fs = require("fs/promises");
-const path = require("path");
 const { HttpError } = require("../helpers/HttpError");
-const crypto = require("crypto");
-
-const tasksPath = path.join(__dirname, "..", "db", "tasks.json");
+const { Task } = require("../models/Task");
 
 const getAllTasksService = async () => {
-  const data = await fs.readFile(tasksPath);
-  return JSON.parse(data);
+  return await Task.find();
 };
 
+// .findOne({_id: id})
+
 const getOneTaskService = async (id) => {
-  const tasks = await getAllTasksService();
-  const oneTask = tasks.find((task) => task.id === id);
+  const oneTask = await Task.findById(id);
   if (!oneTask) {
     throw new HttpError(404, "Task not found");
   }
@@ -20,35 +16,22 @@ const getOneTaskService = async (id) => {
 };
 
 const createTaskService = async (body) => {
-  const tasks = await getAllTasksService();
-  const newTask = {
-    id: crypto.randomUUID(),
-    ...body,
-  };
-  tasks.push(newTask);
-  await fs.writeFile(tasksPath, JSON.stringify(tasks, null, 4));
-  return newTask;
+  return await Task.create(body);
 };
 
 const updateTaskService = async (id, body) => {
-  const tasks = await getAllTasksService();
-  const index = tasks.findIndex((task) => task.id === id);
-  if (index === -1) {
+  const updatedTask = await Task.findByIdAndUpdate(id, body, { new: true });
+  if (!updatedTask) {
     throw new HttpError(404, "Task not found");
   }
-  tasks[index] = { ...tasks[index], ...body };
-  await fs.writeFile(tasksPath, JSON.stringify(tasks, null, 4));
-  return tasks[index];
+  return updatedTask;
 };
 
 const removeTaskService = async (id) => {
-  const tasks = await getAllTasksService();
-  const index = tasks.findIndex((task) => task.id === id);
-  if (index === -1) {
+  const deletedTask = await Task.findByIdAndRemove(id);
+  if (!deletedTask) {
     throw new HttpError(404, "Task not found");
   }
-  const [deletedTask] = tasks.splice(index, 1);
-  await fs.writeFile(tasksPath, JSON.stringify(tasks, null, 4));
   return deletedTask;
 };
 
