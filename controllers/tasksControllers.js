@@ -25,13 +25,13 @@ const createTask = controllerWrapper(async (req, res, next) => {
 
 const updateTask = controllerWrapper(async (req, res, next) => {
   const { id } = req.params;
-  const updatedTask = await updateTaskService(id, req.body);
+  const updatedTask = await updateTaskService(id, req.body, req.user._id);
   res.status(200).json(updatedTask);
 });
 
 const removeTask = controllerWrapper(async (req, res, next) => {
   const { id } = req.params;
-  const deletedTask = await removeTaskService(id);
+  const deletedTask = await removeTaskService(id, req.user._id);
   res.status(200).json(deletedTask);
 });
 
