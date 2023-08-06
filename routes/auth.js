@@ -4,10 +4,16 @@ const router = express.Router();
 
 const { signup, login, logout } = require("./../controllers/authControllers");
 const { auth } = require("./../middlewares/auth");
+const { validateBody } = require("../helpers/validateBody");
 
-router.post("/signup", signup);
+const {
+  signUpValidationSchema,
+  loginValidationSchema,
+} = require("../helpers/validation/authValidationSchemas");
 
-router.post("/login", login);
+router.post("/signup", validateBody(signUpValidationSchema), signup);
+
+router.post("/login", validateBody(loginValidationSchema), login);
 
 router.post("/logout", auth, logout);
 

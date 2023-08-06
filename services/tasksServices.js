@@ -1,8 +1,10 @@
 const { HttpError } = require("../helpers/HttpError");
 const { Task } = require("../models/Task");
 
-const getAllTasksService = async () => {
-  return await Task.find();
+const getAllTasksService = async (userId) => {
+  return await Task.find({
+    owner: userId,
+  });
 };
 
 // .findOne({_id: id})
@@ -15,8 +17,8 @@ const getOneTaskService = async (id) => {
   return oneTask;
 };
 
-const createTaskService = async (body) => {
-  return await Task.create(body);
+const createTaskService = async (body, userId) => {
+  return await Task.create({ ...body, owner: userId });
 };
 
 const updateTaskService = async (id, body) => {

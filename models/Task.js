@@ -4,7 +4,13 @@ const taskSchema = new Schema(
   {
     title: { type: String, required: true },
     completed: { type: Boolean, default: false },
+    owner: {
+      type: Schema.Types.ObjectId,
+      required: true,
+      ref: "user",
+    },
   },
+
   { versionKey: false, timestamps: true, collection: "tasks" }
 );
 

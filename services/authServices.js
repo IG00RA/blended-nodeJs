@@ -21,7 +21,6 @@ const signupService = async (body) => {
 
 const loginService = async (body) => {
   const user = await User.findOne({ email: body.email });
-
   if (!user) {
     throw new HttpError(401, "Email or password incorrect");
   }
